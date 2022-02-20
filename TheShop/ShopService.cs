@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TheShop
 {
-	public class ShopService
+    public class ShopService
 	{
 		private DatabaseDriver DatabaseDriver;
 		private Logger logger;
@@ -92,76 +91,6 @@ namespace TheShop
 		{
 			return this.DatabaseDriver.GetArticleByArticleId(id);
 		}
-	}
-
-	//in memory implementation
-	public class DatabaseDriver
-	{
-		private readonly List<Article> articles = new List<Article>();
-
-		public Article GetArticleByArticleId(int id)
-		{
-            return this.articles.Single(x => x.Id == id);
-		}
-
-		public void SaveArticle(Article article)
-		{
-			this.articles.Add(article);
-		}
-	}
-
-	public class Logger
-	{
-		public void Info(string message)
-		{
-			Console.WriteLine("Info: " + message);
-		}
-
-		public void Error(string message)
-		{
-			Console.WriteLine("Error: " + message);
-		}
-
-		public void Debug(string message)
-		{
-			Console.WriteLine("Debug: " + message);
-		}
-	}
-
-	public class Supplier
-	{
-		public string SuplierName { get; set; }
-		public List<Article> InventoryArticles { get; set; }
-		public bool IsArticleInInventory(int id)	
-		{
-			return this.InventoryArticles.Any(x => x.Id == id);
-		}
-
-		public Article GetArticle(int id)
-		{
-			return this.InventoryArticles.Single(x => x.Id == id);
-			
-		}
-	}
-
-
-	public class Article
-	{
-        public Article(int id, string articleName, int articlePrice)
-        {
-			this.Id = id;
-			this.ArticleName = articleName;
-			this.ArticlePrice = articlePrice;
-        }	
-		public int Id { get; set; }
-
-		public string ArticleName { get; set; }
-
-		public int ArticlePrice { get; set; }
-		public bool IsSold { get; set; }
-
-		public DateTime SoldDate { get; set; }
-		public int BuyerUserId { get; set; }
 	}
 
 }
