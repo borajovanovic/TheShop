@@ -1,17 +1,25 @@
 ﻿using System;
+using TheShopImplementation;
+using TheShopInterfaces;
 
 namespace TheShop
 {
-	internal class Program
+    internal class Program
 	{
 		private static void Main(string[] args)
 		{
 			ShopService shopService = new ShopService();
+			int articleId = 1;
+			int maxArticlePrice = 20;
+
+			int buyerId = 10;
 
 			try
 			{
 				//order and sell
-				shopService.OrderAndSellArticle(1, 20, 10);
+				Article orderedArticle = shopService.OrderArticle(articleId, maxArticlePrice);
+				shopService.SellArticle(orderedArticle, buyerId);
+
 			}
 			catch (Exception ex)
 			{

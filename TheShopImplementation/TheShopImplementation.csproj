@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{72C6A701-A607-4030-8A52-D004440C2AA1}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>TheShop</RootNamespace>
-    <AssemblyName>TheShop</AssemblyName>
+    <ProjectGuid>{42162DAD-0BE4-4A4E-91A2-1C9A736BC7E4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TheShopImplementation</RootNamespace>
+    <AssemblyName>TheShopImplementation</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,22 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="DatabaseDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <Compile Include="ShopService.cs" />
+    <Compile Include="Supplier.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Logger\LoggerImplementation.csproj">
       <Project>{f66ea885-8bff-4a7c-80a6-b9fd9d348490}</Project>
       <Name>LoggerImplementation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TheShopImplementation\TheShopImplementation.csproj">
-      <Project>{42162dad-0be4-4a4e-91a2-1c9a736bc7e4}</Project>
-      <Name>TheShopImplementation</Name>
     </ProjectReference>
     <ProjectReference Include="..\TheShopInterfaces\TheShopInterfaces.csproj">
       <Project>{c925363b-41a3-43da-8f9e-b806319921b6}</Project>
