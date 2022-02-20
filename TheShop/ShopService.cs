@@ -9,42 +9,43 @@ namespace TheShop
 		private DatabaseDriver DatabaseDriver;
 		private Logger logger;
 
-		private Supplier1 Supplier1;
-		private Supplier2 Supplier2;
-		private Supplier3 Supplier3;
+		private Supplier Supplier1;
+		private Supplier Supplier2;
+		private Supplier Supplier3;
 		
 		public ShopService()
 		{
-			DatabaseDriver = new DatabaseDriver();
-			logger = new Logger();
-			Supplier1 = new Supplier1();
-			Supplier2 = new Supplier2();
-			Supplier3 = new Supplier3();
+			this.DatabaseDriver = new DatabaseDriver();
+			this.logger = new Logger();
+			this.Supplier1 = new Supplier() { SuplierName = "Suplier1", InventoryArticles = new List<Article>() { new Article(1, "Article from supplier1", 458) }};
+			this.Supplier2 = new Supplier() { SuplierName = "Suplier2", InventoryArticles = new List<Article>() { new Article(1, "Article from supplier2", 459) } };
+			this.Supplier3 = new Supplier() { SuplierName = "Suplier3", InventoryArticles = new List<Article>() { new Article(1, "Article from supplier3", 460) } };
+
 		}
 
-		public void OrderAndSellArticle(int id, int maxExpectedPrice, int buyerId)
+		public void OrderAndSellArticle(int articleId, int maxExpectedArticlePrice, int buyerId)
 		{
 			#region ordering article
 
 			Article article = null;
 			Article tempArticle = null;
-			var articleExists = Supplier1.ArticleInInventory(id);
+			var articleExists = this.Supplier1.IsArticleInInventory(articleId);
 			if (articleExists)
 			{
-				tempArticle = Supplier1.GetArticle(id);
-				if (maxExpectedPrice < tempArticle.ArticlePrice)
+				tempArticle = this.Supplier1.GetArticle(articleId);
+				if (maxExpectedArticlePrice < tempArticle.ArticlePrice)
 				{
-					articleExists = Supplier2.ArticleInInventory(id);
+					articleExists = this.Supplier2.IsArticleInInventory(articleId);
 					if (articleExists)
 					{
-						tempArticle = Supplier2.GetArticle(id);
-						if (maxExpectedPrice < tempArticle.ArticlePrice)
+						tempArticle = this.Supplier2.GetArticle(articleId);
+						if (maxExpectedArticlePrice < tempArticle.ArticlePrice)
 						{
-							articleExists = Supplier3.ArticleInInventory(id);
+							articleExists = this.Supplier3.IsArticleInInventory(articleId);
 							if (articleExists)
 							{
-								tempArticle = Supplier3.GetArticle(id);
-								if (maxExpectedPrice < tempArticle.ArticlePrice)
+								tempArticle = this.Supplier3.GetArticle(articleId);
+								if (maxExpectedArticlePrice < tempArticle.ArticlePrice)
 								{
 									article = tempArticle;
 								}
@@ -64,7 +65,7 @@ namespace TheShop
 				throw new Exception("Could not order article");
 			}
 
-			logger.Debug("Trying to sell article with id=" + id);
+			logger.Debug("Trying to sell article with id=" + articleId);
 
 			article.IsSold = true;
 			article.SoldDate = DateTime.Now;
@@ -72,12 +73,12 @@ namespace TheShop
 			
 			try
 			{
-				DatabaseDriver.Save(article);
-				logger.Info("Article with id=" + id + " is sold.");
+				DatabaseDriver.SaveArticle(article);
+				logger.Info("Article with id=" + articleId + " is sold.");
 			}
 			catch (ArgumentNullException ex)
 			{
-				logger.Error("Could not save article with id=" + id);
+				logger.Error("Could not save article with id=" + articleId);
 				throw new Exception("Could not save article with id");
 			}
 			catch (Exception)
@@ -87,25 +88,25 @@ namespace TheShop
 			#endregion
 		}
 
-		public Article GetById(int id)
+		public Article GetArticleByArticleId(int id)
 		{
-			return DatabaseDriver.GetById(id);
+			return this.DatabaseDriver.GetArticleByArticleId(id);
 		}
 	}
 
 	//in memory implementation
 	public class DatabaseDriver
 	{
-		private List<Article> _articles = new List<Article>();
+		private readonly List<Article> articles = new List<Article>();
 
-		public Article GetById(int id)
+		public Article GetArticleByArticleId(int id)
 		{
-            return _articles.Single(x => x.ID == id);
+            return this.articles.Single(x => x.Id == id);
 		}
 
-		public void Save(Article article)
+		public void SaveArticle(Article article)
 		{
-			_articles.Add(article);
+			this.articles.Add(article);
 		}
 	}
 
@@ -127,65 +128,34 @@ namespace TheShop
 		}
 	}
 
-	public class Supplier1
+	public class Supplier
 	{
-		public bool ArticleInInventory(int id)
+		public string SuplierName { get; set; }
+		public List<Article> InventoryArticles { get; set; }
+		public bool IsArticleInInventory(int id)	
 		{
-			return true;
+			return this.InventoryArticles.Any(x => x.Id == id);
 		}
 
 		public Article GetArticle(int id)
 		{
-			return new Article()
-			{
-				ID = 1,
-				Name_of_article = "Article from supplier1",
-				ArticlePrice = 458
-			};
+			return this.InventoryArticles.Single(x => x.Id == id);
+			
 		}
 	}
 
-	public class Supplier2
-	{
-		public bool ArticleInInventory(int id)
-		{
-			return true;
-		}
-
-		public Article GetArticle(int id)
-		{
-			return new Article()
-			{
-				ID = 1,
-				Name_of_article = "Article from supplier2",
-				ArticlePrice = 459
-			};
-		}
-	}
-
-	public class Supplier3
-	{
-		public bool ArticleInInventory(int id)
-		{
-			return true;
-		}
-
-		public Article GetArticle(int id)
-		{
-			return new Article()
-			{
-				ID = 1,
-				Name_of_article = "Article from supplier3",
-				ArticlePrice = 460
-			};
-		}
-	}
 
 	public class Article
 	{
-		public int ID { get; set; }
+        public Article(int id, string articleName, int articlePrice)
+        {
+			this.Id = id;
+			this.ArticleName = articleName;
+			this.ArticlePrice = articlePrice;
+        }	
+		public int Id { get; set; }
 
-		public string Name_of_article { get; set; }
+		public string ArticleName { get; set; }
 
 		public int ArticlePrice { get; set; }
 		public bool IsSold { get; set; }
