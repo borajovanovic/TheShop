@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TheShopInterfaces
+namespace ShopInterfaces
 {
     public interface ISupplier
     {

@@ -1,4 +1,4 @@
-﻿namespace TheShopInterfaces
+﻿namespace ShopInterfaces
 {
     public interface IDatabaseDriver
     {

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using ShopInterfaces;
+using System.Collections.Generic;
 using System.Linq;
-using TheShopInterfaces;
 
-namespace TheShopImplementation
+namespace ShopImplementation
 {
     //in memory implementation
     public class DatabaseDriver : IDatabaseDriver

@@ -1,17 +1,18 @@
-﻿using System;
-using TheShopImplementation;
-using TheShopInterfaces;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ShopInterfaces;
+using System;
 
 namespace TheShop
 {
     internal class Program
 	{
+		public static readonly IServiceProvider Container = ContainerBuilder.Build();
+
 		private static void Main(string[] args)
 		{
-			ShopService shopService = new ShopService();
+			IShopService shopService = Container.GetInstance<IShopService>();
 			int articleId = 1;
 			int maxArticlePrice = 20;
-
 			int buyerId = 10;
 
 			try

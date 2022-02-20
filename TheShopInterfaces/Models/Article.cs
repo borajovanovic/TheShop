@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TheShopInterfaces
+namespace ShopInterfaces
 {
     public class Article
     {

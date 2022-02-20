@@ -1,4 +1,4 @@
-﻿namespace LoggerImplementation
+﻿namespace Logger
 {
     public interface ILogger
     {

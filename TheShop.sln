@@ -5,13 +5,13 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheShop", "TheShop\TheShop.csproj", "{72C6A701-A607-4030-8A52-D004440C2AA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheShopInterfaces", "TheShopInterfaces\TheShopInterfaces.csproj", "{C925363B-41A3-43DA-8F9E-B806319921B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopInterfaces", "TheShopInterfaces\ShopInterfaces.csproj", "{C925363B-41A3-43DA-8F9E-B806319921B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheShopTests", "TheShopTests\TheShopTests.csproj", "{F6524AFC-E55D-4351-856C-5E35489C2B15}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopTests", "TheShopTests\ShopTests.csproj", "{F6524AFC-E55D-4351-856C-5E35489C2B15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheShopImplementation", "TheShopImplementation\TheShopImplementation.csproj", "{42162DAD-0BE4-4A4E-91A2-1C9A736BC7E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopImplementation", "TheShopImplementation\ShopImplementation.csproj", "{42162DAD-0BE4-4A4E-91A2-1C9A736BC7E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerImplementation", "Logger\LoggerImplementation.csproj", "{F66EA885-8BFF-4A7C-80A6-B9FD9D348490}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "Logger\Logger.csproj", "{F66EA885-8BFF-4A7C-80A6-B9FD9D348490}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,23 +1,23 @@
-﻿using LoggerImplementation;
+﻿using Logger;
+using ShopInterfaces;
 using System;
 using System.Collections.Generic;
-using TheShopInterfaces;
 
-namespace TheShopImplementation
+namespace ShopImplementation
 {
     public class ShopService : IShopService
     {
-        private DatabaseDriver DatabaseDriver;
-        private Logger logger;
+        private readonly IDatabaseDriver databaseDriver;
+        private readonly ILogger logger;
 
         private Supplier Supplier1;
         private Supplier Supplier2;
         private Supplier Supplier3;
 
-        public ShopService()
+        public ShopService(IDatabaseDriver databaseDriver, ILogger logger)
         {
-            DatabaseDriver = new DatabaseDriver();
-            logger = new Logger();
+            this.databaseDriver = databaseDriver;
+            this.logger = logger;
             Supplier1 = new Supplier() { SuplierName = "Suplier1", InventoryArticles = new List<Article>() { new Article(1, "Article from supplier1", 458) } };
             Supplier2 = new Supplier() { SuplierName = "Suplier2", InventoryArticles = new List<Article>() { new Article(1, "Article from supplier2", 459) } };
             Supplier3 = new Supplier() { SuplierName = "Suplier3", InventoryArticles = new List<Article>() { new Article(1, "Article from supplier3", 460) } };
@@ -67,7 +67,7 @@ namespace TheShopImplementation
                 throw new Exception("Could not order article");
             }
 
-            logger.Debug("Trying to sell article with ID =" + article.Id);
+            this.logger.Debug("Trying to sell article with ID =" + article.Id);
 
             article.IsSold = true;
             article.SoldDate = DateTime.Now;
@@ -75,12 +75,12 @@ namespace TheShopImplementation
 
             try
             {
-                DatabaseDriver.SaveArticle(article);
-                logger.Info("Article with id=" + article.Id + " is sold.");
+                databaseDriver.SaveArticle(article);
+                this.logger.Info("Article with id=" + article.Id + " is sold.");
             }
             catch (ArgumentNullException ex)
             {
-                logger.Error("Could not save article with ID =" + article.Id);
+                this.logger.Error("Could not save article with ID =" + article.Id);
                 throw new Exception("Could not save article with ID");
             }
             catch (Exception)
@@ -90,7 +90,7 @@ namespace TheShopImplementation
 
         public Article GetArticleByArticleId(int id)
         {
-            return DatabaseDriver.GetArticleByArticleId(id);
+            return this.databaseDriver.GetArticleByArticleId(id);
         }
     }
 
