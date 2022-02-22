@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Util.Logger
+﻿namespace Util.Logger
 {
     public class Logger : ILogger
     {

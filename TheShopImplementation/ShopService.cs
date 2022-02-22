@@ -11,43 +11,47 @@ namespace ShopImplementation
         private readonly IArticleRepository articleRepository;
         private readonly ILogger logger;
         private readonly ITimeProvider timeProvider;
-
+        private List<Supplier> Suppliers;
 
         private Supplier Supplier1;
         private Supplier Supplier2;
         private Supplier Supplier3;
 
-        public ShopService(IArticleRepository databaseDriver, ILogger logger, ITimeProvider timeProvider)
+        public ShopService(IArticleRepository articleRepository, ILogger logger, ITimeProvider timeProvider)
         {
-            this.articleRepository = databaseDriver;
+            this.articleRepository = articleRepository;
             this.logger = logger;
             this.timeProvider = timeProvider;
-            Supplier1 = new Supplier() { SuplierName = "Suplier1", InventoryArticles = new List<Article>() { new Article(1, "Article from supplier1", 458) } };
-            Supplier2 = new Supplier() { SuplierName = "Suplier2", InventoryArticles = new List<Article>() { new Article(1, "Article from supplier2", 459) } };
-            Supplier3 = new Supplier() { SuplierName = "Suplier3", InventoryArticles = new List<Article>() { new Article(1, "Article from supplier3", 460) } };
-
+            this.Suppliers = new SupplierCollectionBuilder()
+              .WithSupplier(new SupplierBuilder("Suplier1").WithInventory(new InventoryBuilder().WithArticle(new ArticleBuilder(1, "Article from supplier1", 458))))
+              .WithSupplier(new SupplierBuilder("Suplier2").WithInventory(new InventoryBuilder().WithArticle(new ArticleBuilder(1, "Article from supplier2", 459))))
+              .WithSupplier(new SupplierBuilder("Suplier2").WithInventory(new InventoryBuilder().WithArticle(new ArticleBuilder(1, "Article from supplier3", 460))))
+              .Build();
+            this.Supplier1 = Suppliers[0];
+            this.Supplier2 = Suppliers[1];
+            this.Supplier3 = Suppliers[2];
         }
 
         public Article OrderArticle(int articleId, int maxExpectedArticlePrice)
         {
             Article article = null;
             Article tempArticle = null;
-            var articleExists = Supplier1.IsArticleInInventory(articleId);
+            var articleExists = Supplier1.Inventory.IsArticleInInventory(articleId);
             if (articleExists)
             {
-                tempArticle = Supplier1.GetArticle(articleId);
+                tempArticle = Supplier1.Inventory.GetArticle(articleId);
                 if (maxExpectedArticlePrice < tempArticle.ArticlePrice)
                 {
-                    articleExists = Supplier2.IsArticleInInventory(articleId);
+                    articleExists = Supplier2.Inventory.IsArticleInInventory(articleId);
                     if (articleExists)
                     {
-                        tempArticle = Supplier2.GetArticle(articleId);
+                        tempArticle = Supplier2.Inventory.GetArticle(articleId);
                         if (maxExpectedArticlePrice < tempArticle.ArticlePrice)
                         {
-                            articleExists = Supplier3.IsArticleInInventory(articleId);
+                            articleExists = Supplier3.Inventory.IsArticleInInventory(articleId);
                             if (articleExists)
                             {
-                                tempArticle = Supplier3.GetArticle(articleId);
+                                tempArticle = Supplier3.Inventory.GetArticle(articleId);
                                 if (maxExpectedArticlePrice < tempArticle.ArticlePrice)
                                 {
                                     article = tempArticle;
@@ -80,7 +84,7 @@ namespace ShopImplementation
 
             try
             {
-                articleRepository.SaveArticle(article);
+                this.articleRepository.SaveArticle(article);
                 this.logger.LogMessage($"Article with ID = {article.Id} is sold.", LogLevel.Info);
             }
             catch (ArgumentNullException ex)

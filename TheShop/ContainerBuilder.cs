@@ -16,7 +16,6 @@ namespace TheShop
             container.AddScoped<IShopService, ShopService>();
             container.AddScoped<ILogger, Logger>();
             container.AddScoped<ILogType, ConsoleLogger>();
-
             container.AddScoped<ITimeProvider, TimeProvider>();
 
             return container.BuildServiceProvider();

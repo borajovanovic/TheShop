@@ -8,8 +8,8 @@
     <ProjectGuid>{42162DAD-0BE4-4A4E-91A2-1C9A736BC7E4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TheShopImplementation</RootNamespace>
-    <AssemblyName>TheShopImplementation</AssemblyName>
+    <RootNamespace>ShopImplementation</RootNamespace>
+    <AssemblyName>ShopImplementation</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -48,8 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArticleReposiotry.cs" />
+    <Compile Include="Inventory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShopService.cs" />
+    <Compile Include="SupplierBuilder.cs" />
     <Compile Include="Supplier.cs" />
   </ItemGroup>
   <ItemGroup>

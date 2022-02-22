@@ -8,8 +8,8 @@
     <ProjectGuid>{C925363B-41A3-43DA-8F9E-B806319921B6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TheShopInterfaces</RootNamespace>
-    <AssemblyName>TheShopInterfaces</AssemblyName>
+    <RootNamespace>ShopInterfaces</RootNamespace>
+    <AssemblyName>ShopInterfaces</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -49,7 +49,6 @@
   <ItemGroup>
     <Compile Include="IArticleRepository.cs" />
     <Compile Include="IShopService.cs" />
-    <Compile Include="ISupplier.cs" />
     <Compile Include="Models\Article.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
