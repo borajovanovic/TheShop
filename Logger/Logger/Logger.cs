@@ -4,20 +4,33 @@ namespace Util.Logger
 {
     public class Logger : ILogger
     {
-        public void Info(string message)
+        private readonly ILogType logType;
+
+        public Logger(ILogType logType)
         {
-            Console.WriteLine("Info: " + message);
+            this.logType = logType;
         }
 
-        public void Error(string message)
+        public void LogMessage(string message, LogLevel logLevel)
         {
-            Console.WriteLine("Error: " + message);
+            switch (logLevel)
+            {
+                case LogLevel.Info:
+                    message = $"Info: {message}";
+                    break;
+                case LogLevel.Error:
+                    message = $"Error: {message}";
+                    break;
+                case LogLevel.Debug:
+                    message = $"Debug: {message}";
+                    break;
+                default:
+                    break;
+            }
+
+            this.logType.Log(message);
         }
 
-        public void Debug(string message)
-        {
-            Console.WriteLine("Debug: " + message);
-        }
     }
 
 }

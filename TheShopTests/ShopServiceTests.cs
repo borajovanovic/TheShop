@@ -64,9 +64,9 @@ namespace TheShopTests
 
             this.shopService.SellArticle(article, buyerId);
 
-            this.logger.Received(1).Debug("Trying to sell article with ID =" + article.Id);
+            this.logger.Received(1).LogMessage($"Trying to sell article with ID = {article.Id}", LogLevel.Debug);
             this.articleRepository.Received(1).SaveArticle(article);
-            this.logger.Received(1).Info("Article with id=" + article.Id + " is sold.");
+            this.logger.Received(1).LogMessage($"Article with ID = {article.Id} is sold.", LogLevel.Info);
             Assert.IsTrue(article.IsSold, "Article IsSold flag should be set to true");
             Assert.AreEqual(nowTime, article.SoldDate);
             Assert.AreEqual(buyerId, article.BuyerUserId);
