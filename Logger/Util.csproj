@@ -47,9 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ILogger.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="Logger\ILogger.cs" />
+    <Compile Include="Logger\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimeProvider\ITimeProvider.cs" />
+    <Compile Include="TimeProvider\TimeProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

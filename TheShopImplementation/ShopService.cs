@@ -1,23 +1,27 @@
-﻿using Logger;
+﻿using Util.Logger;
 using ShopInterfaces;
 using System;
 using System.Collections.Generic;
+using Util.TimeProvider;
 
 namespace ShopImplementation
 {
     public class ShopService : IShopService
     {
-        private readonly IDatabaseDriver databaseDriver;
+        private readonly IArticleRepository articleRepository;
         private readonly ILogger logger;
+        private readonly ITimeProvider timeProvider;
+
 
         private Supplier Supplier1;
         private Supplier Supplier2;
         private Supplier Supplier3;
 
-        public ShopService(IDatabaseDriver databaseDriver, ILogger logger)
+        public ShopService(IArticleRepository databaseDriver, ILogger logger, ITimeProvider timeProvider)
         {
-            this.databaseDriver = databaseDriver;
+            this.articleRepository = databaseDriver;
             this.logger = logger;
+            this.timeProvider = timeProvider;
             Supplier1 = new Supplier() { SuplierName = "Suplier1", InventoryArticles = new List<Article>() { new Article(1, "Article from supplier1", 458) } };
             Supplier2 = new Supplier() { SuplierName = "Suplier2", InventoryArticles = new List<Article>() { new Article(1, "Article from supplier2", 459) } };
             Supplier3 = new Supplier() { SuplierName = "Suplier3", InventoryArticles = new List<Article>() { new Article(1, "Article from supplier3", 460) } };
@@ -55,6 +59,7 @@ namespace ShopImplementation
             }
 
             article = tempArticle;
+
             return article;
 
         }
@@ -64,33 +69,33 @@ namespace ShopImplementation
 
             if (article == null)
             {
-                throw new Exception("Could not order article");
+                throw new Exception("Could not order article"); //this should be in order method 
             }
 
             this.logger.Debug("Trying to sell article with ID =" + article.Id);
 
             article.IsSold = true;
-            article.SoldDate = DateTime.Now;
+            article.SoldDate = timeProvider.GetNowTime();
             article.BuyerUserId = buyerId;
 
             try
             {
-                databaseDriver.SaveArticle(article);
+                articleRepository.SaveArticle(article);
                 this.logger.Info("Article with id=" + article.Id + " is sold.");
             }
             catch (ArgumentNullException ex)
             {
-                this.logger.Error("Could not save article with ID =" + article.Id);
-                throw new Exception("Could not save article with ID");
+                this.logger.Error("Could not save article with ID =" + article.Id);  //unreachable code, it already checked that article is not null, probably should be part of databaseDriver
+                throw new Exception("Could not save article with ID"); // throw in catch 
             }
             catch (Exception)
-            {
+            {//remove this exception
             }
         }
 
         public Article GetArticleByArticleId(int id)
         {
-            return this.databaseDriver.GetArticleByArticleId(id);
+            return this.articleRepository.GetArticleByArticleId(id);
         }
     }
 

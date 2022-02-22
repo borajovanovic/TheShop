@@ -5,7 +5,7 @@ using System.Linq;
 namespace ShopImplementation
 {
     //in memory implementation
-    public class DatabaseDriver : IDatabaseDriver
+    public class ArticleReposiotry : IArticleRepository
     {
         private readonly List<Article> articles = new List<Article>();
 
