@@ -33,13 +33,13 @@ namespace TheShopTests
             this.shopService = new ShopService(this.articleRepository, this.logger, this.timeProvider, this.supplierService);
         }
 
-        [Test]
-        public void ShopService_OrderArticle_ArticleSuccessfullyFound()
+        [TestCase(458, "Article from supplier1",458)]
+        [TestCase(459, "Article from supplier1", 458)]
+        [TestCase(460, "Article from supplier1", 458)]
+
+        public void ShopService_OrderArticle_LowestPriceArticleSuccessfullyFound(int maxArticlePrice, string expectedArticleName, int expectedArticlePrice)
         {
             int articleId = 1;
-            int maxArticlePrice = 20;
-            string expectedArticleName = "Article from supplier3";
-            int expectedArticlePrice = 460;
 
             Article orderedArticle = this.shopService.OrderArticle(articleId, maxArticlePrice);
 
@@ -49,13 +49,16 @@ namespace TheShopTests
         }
 
         [Test]
-        public void ShopService_ArticleIsNull_ThrowException()
+        public void ShopService_OrderArticle_ThrowException()
         {
-            int buyerId = 10;
-            Exception exception = Assert.Throws<Exception>(() => this.shopService.SellArticle(null, buyerId));
+            int articleId = 2;
+            int maxArticlePrice = 20;
 
+            Exception exception = Assert.Throws<Exception>(() => this.shopService.OrderArticle(articleId, maxArticlePrice));
             Assert.That(exception.Message, Is.EqualTo("Could not order article"));
+
         }
+
 
         [Test]
         public void ShopService_SellArticle_Success()

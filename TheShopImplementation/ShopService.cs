@@ -13,7 +13,6 @@ namespace ShopImplementation
         private readonly ISupplierService supplierService;
         private readonly ILogger logger;
         private readonly ITimeProvider timeProvider;
-        private IEnumerable<Supplier> Suppliers;
 
         public ShopService(IArticleRepository articleRepository, ILogger logger, ITimeProvider timeProvider, ISupplierService supplierService)
         {
@@ -26,38 +25,13 @@ namespace ShopImplementation
 
         public Article OrderArticle(int articleId, int maxExpectedArticlePrice)
         {
-            Article article = null;
-            Article tempArticle = null;
-            this.Suppliers = supplierService.GetSupliers();
+            Article minimumPriceArticle = this.FindArticleWithMinimumPrice(articleId, maxExpectedArticlePrice);
 
-            foreach (Supplier supplier in this.Suppliers)
-            {
-                bool articleExists = supplier.Inventory.InventoryArticles.Any(x => x.Id == articleId);
-                if (articleExists)
-                {
-                    tempArticle = supplier.Inventory.InventoryArticles.Single(x => x.Id == articleId);
-                    if (maxExpectedArticlePrice < tempArticle.ArticlePrice)
-                    {
-                        article = tempArticle;
-                    }
-                }
-
-            }
-
-
-            article = tempArticle;
-
-            return article;
-
+            return minimumPriceArticle ?? throw new Exception("Could not order article");
         }
 
         public void SellArticle(Article article, int buyerId)
         {
-
-            if (article == null)
-            {
-                throw new Exception("Could not order article"); //this should be in order method 
-            }
 
             this.logger.LogMessage($"Trying to sell article with ID = {article.Id}", LogLevel.Debug);
 
@@ -83,6 +57,26 @@ namespace ShopImplementation
         public Article GetArticleByArticleId(int id)
         {
             return this.articleRepository.GetArticleByArticleId(id);
+        }
+
+
+        private Article FindArticleWithMinimumPrice(int articleId, int maxExpectedArticlePrice)
+        {
+            Article article = null;
+            Article tempArticle;
+
+            foreach (Supplier supplier in this.supplierService.GetSupliers())
+            {
+                tempArticle = supplier.Inventory.InventoryArticles.FirstOrDefault(x => x.Id == articleId);
+
+                if (tempArticle != null && maxExpectedArticlePrice >= tempArticle.ArticlePrice)
+                {
+                    article = tempArticle;
+                    maxExpectedArticlePrice = article.ArticlePrice;
+                }
+
+            }
+            return article;
         }
     }
 
