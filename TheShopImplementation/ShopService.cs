@@ -1,7 +1,8 @@
-﻿using Util.Logger;
-using ShopInterfaces;
+﻿using ShopInterfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Util.Logger;
 using Util.TimeProvider;
 
 namespace ShopImplementation
@@ -9,58 +10,40 @@ namespace ShopImplementation
     public class ShopService : IShopService
     {
         private readonly IArticleRepository articleRepository;
+        private readonly ISupplierService supplierService;
         private readonly ILogger logger;
         private readonly ITimeProvider timeProvider;
-        private List<Supplier> Suppliers;
+        private IEnumerable<Supplier> Suppliers;
 
-        private Supplier Supplier1;
-        private Supplier Supplier2;
-        private Supplier Supplier3;
-
-        public ShopService(IArticleRepository articleRepository, ILogger logger, ITimeProvider timeProvider)
+        public ShopService(IArticleRepository articleRepository, ILogger logger, ITimeProvider timeProvider, ISupplierService supplierService)
         {
             this.articleRepository = articleRepository;
             this.logger = logger;
             this.timeProvider = timeProvider;
-            this.Suppliers = new SupplierCollectionBuilder()
-              .WithSupplier(new SupplierBuilder("Suplier1").WithInventory(new InventoryBuilder().WithArticle(new ArticleBuilder(1, "Article from supplier1", 458))))
-              .WithSupplier(new SupplierBuilder("Suplier2").WithInventory(new InventoryBuilder().WithArticle(new ArticleBuilder(1, "Article from supplier2", 459))))
-              .WithSupplier(new SupplierBuilder("Suplier2").WithInventory(new InventoryBuilder().WithArticle(new ArticleBuilder(1, "Article from supplier3", 460))))
-              .Build();
-            this.Supplier1 = Suppliers[0];
-            this.Supplier2 = Suppliers[1];
-            this.Supplier3 = Suppliers[2];
+            this.supplierService = supplierService;
+
         }
 
         public Article OrderArticle(int articleId, int maxExpectedArticlePrice)
         {
             Article article = null;
             Article tempArticle = null;
-            var articleExists = Supplier1.Inventory.IsArticleInInventory(articleId);
-            if (articleExists)
+            this.Suppliers = supplierService.GetSupliers();
+
+            foreach (Supplier supplier in this.Suppliers)
             {
-                tempArticle = Supplier1.Inventory.GetArticle(articleId);
-                if (maxExpectedArticlePrice < tempArticle.ArticlePrice)
+                bool articleExists = supplier.Inventory.InventoryArticles.Any(x => x.Id == articleId);
+                if (articleExists)
                 {
-                    articleExists = Supplier2.Inventory.IsArticleInInventory(articleId);
-                    if (articleExists)
+                    tempArticle = supplier.Inventory.InventoryArticles.Single(x => x.Id == articleId);
+                    if (maxExpectedArticlePrice < tempArticle.ArticlePrice)
                     {
-                        tempArticle = Supplier2.Inventory.GetArticle(articleId);
-                        if (maxExpectedArticlePrice < tempArticle.ArticlePrice)
-                        {
-                            articleExists = Supplier3.Inventory.IsArticleInInventory(articleId);
-                            if (articleExists)
-                            {
-                                tempArticle = Supplier3.Inventory.GetArticle(articleId);
-                                if (maxExpectedArticlePrice < tempArticle.ArticlePrice)
-                                {
-                                    article = tempArticle;
-                                }
-                            }
-                        }
+                        article = tempArticle;
                     }
                 }
+
             }
+
 
             article = tempArticle;
 

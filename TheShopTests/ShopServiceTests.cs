@@ -15,7 +15,7 @@ namespace TheShopTests
         private IArticleRepository articleRepository;
         private ILogger logger;
         private ITimeProvider timeProvider;
-
+        private ISupplierService supplierService;
 
         [SetUp]
         public void SetUp()
@@ -23,8 +23,14 @@ namespace TheShopTests
             this.logger = Substitute.For<ILogger>();
             this.articleRepository = Substitute.For<IArticleRepository>();
             this.timeProvider = Substitute.For<ITimeProvider>();
+            this.supplierService = Substitute.For<ISupplierService>();
+            this.supplierService.GetSupliers().Returns(new SupplierCollectionBuilder()
+              .WithSupplier(new SupplierBuilder("Suplier1").WithId(1).WithInventory(new InventoryBuilder().WithArticle(new ArticleBuilder(1, "Article from supplier1", 458))))
+              .WithSupplier(new SupplierBuilder("Suplier2").WithId(2).WithInventory(new InventoryBuilder().WithArticle(new ArticleBuilder(1, "Article from supplier2", 459))))
+              .WithSupplier(new SupplierBuilder("Suplier2").WithId(3).WithInventory(new InventoryBuilder().WithArticle(new ArticleBuilder(1, "Article from supplier3", 460))))
+              .Build());
 
-            this.shopService = new ShopService(this.articleRepository, this.logger, this.timeProvider);
+            this.shopService = new ShopService(this.articleRepository, this.logger, this.timeProvider, this.supplierService);
         }
 
         [Test]

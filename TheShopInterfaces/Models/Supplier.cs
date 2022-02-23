@@ -1,4 +1,4 @@
-﻿namespace ShopImplementation
+﻿namespace ShopInterfaces
 {
     public class Supplier
     {

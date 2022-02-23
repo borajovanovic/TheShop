@@ -6,7 +6,7 @@ namespace ShopImplementation
 {
     public class SupplierCollectionBuilder
     {
-        private List<SupplierBuilder> supplierBuilders;
+        private IList<SupplierBuilder> supplierBuilders;
         public SupplierCollectionBuilder()
         {
             this.supplierBuilders = new List<SupplierBuilder>();
@@ -18,9 +18,9 @@ namespace ShopImplementation
             return this;
         }
 
-        public List<Supplier> Build()
+        public IList<Supplier> Build()
         {
-            List<Supplier> suppliers = new List<Supplier>();
+            IList<Supplier> suppliers = new List<Supplier>();
             foreach (SupplierBuilder supplierBuilder in supplierBuilders)
             {
                 suppliers.Add(supplierBuilder.BuildSupplier());
