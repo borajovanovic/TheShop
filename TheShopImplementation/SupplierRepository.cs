@@ -10,15 +10,15 @@ namespace ShopImplementation
 
         public IList<Supplier> GetAllSupliers()
         {
-            if (suppliers.Count == 0 )
+            if (this.suppliers.Count == 0 )
             {
-                suppliers.AddRange(new SupplierCollectionBuilder()
+                this.suppliers.AddRange(new SupplierCollectionBuilder()
               .WithSupplier(new SupplierBuilder("Suplier1").WithId(1).WithInventory(new InventoryBuilder().WithArticle(new ArticleBuilder(1, "Article from supplier1", 458))))
               .WithSupplier(new SupplierBuilder("Suplier2").WithId(2).WithInventory(new InventoryBuilder().WithArticle(new ArticleBuilder(1, "Article from supplier2", 459))))
               .WithSupplier(new SupplierBuilder("Suplier2").WithId(3).WithInventory(new InventoryBuilder().WithArticle(new ArticleBuilder(1, "Article from supplier3", 460))))
               .Build());
             }
-            return suppliers;
+            return this.suppliers;
         }
 
         

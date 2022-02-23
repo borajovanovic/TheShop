@@ -2,8 +2,9 @@
 {
     public interface IShopService
     {
-        Article GetArticleByArticleId(int id);
-        Article OrderArticle(int articleId, int maxExpectedArticlePrice);
-        void SellArticle(Article article, int buyerId);
+        Article GetSoldArticleByArticleId(int id);
+        Article GetOrderedArticleByArticleId(int id);
+        void OrderArticle(int articleId, int maxExpectedArticlePrice);
+        void SellArticle(int articleId, int buyerId);
     }
 }

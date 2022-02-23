@@ -16,6 +16,7 @@ namespace ShopInterfaces
 
         public int ArticlePrice { get; set; }
         public bool IsSold { get; set; }
+        public bool IsOrdered { get; set; }
 
         public DateTime SoldDate { get; set; }
         public int BuyerUserId { get; set; }

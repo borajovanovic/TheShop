@@ -7,16 +7,20 @@ namespace ShopImplementation
     //in memory implementation
     public class ArticleReposiotry : IArticleRepository
     {
-        private readonly List<Article> articles = new List<Article>();
+        private readonly HashSet<Article> articles = new HashSet<Article>();
 
-        public Article GetArticleByArticleId(int id)
+        public IEnumerable<Article> GetArticleByArticleId(int id)
         {
-            return articles.Single(x => x.Id == id);
+            return articles.Where(x => x.Id == id);
         }
 
         public void SaveArticle(Article article)
         {
-            articles.Add(article);
+            if (this.articles.Contains(article))
+            {
+                return;
+            }
+            this.articles.Add(article);
         }
     }
 

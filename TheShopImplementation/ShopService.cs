@@ -1,7 +1,6 @@
 ﻿using ShopInterfaces;
-using System;
-using System.Collections.Generic;
 using System.Linq;
+using Util.Exception;
 using Util.Logger;
 using Util.TimeProvider;
 
@@ -23,40 +22,55 @@ namespace ShopImplementation
 
         }
 
-        public Article OrderArticle(int articleId, int maxExpectedArticlePrice)
+        public void OrderArticle(int articleId, int maxExpectedArticlePrice)
         {
             Article minimumPriceArticle = this.FindArticleWithMinimumPrice(articleId, maxExpectedArticlePrice);
-
-            return minimumPriceArticle ?? throw new Exception("Could not order article");
+            if (minimumPriceArticle == null)
+            {
+                throw new ArticleNotFoundException($"Could not order article with article ID = {articleId}");
+            }
+            minimumPriceArticle.IsOrdered = true;
+            this.articleRepository.SaveArticle(minimumPriceArticle);
+            this.logger.LogMessage($"Article with ID = {articleId} is successfully ordered", LogLevel.Info);
         }
 
-        public void SellArticle(Article article, int buyerId)
+        public void SellArticle(int articleId, int buyerId) // use articleId
         {
-
+            Article article = this.GetOrderedArticleByArticleId(articleId);
             this.logger.LogMessage($"Trying to sell article with ID = {article.Id}", LogLevel.Debug);
 
+            if (article == null)
+            {
+                throw new ArticleNotFoundException($"Could not sell article with article ID = {articleId}");
+            }
             article.IsSold = true;
             article.SoldDate = timeProvider.GetNowTime();
             article.BuyerUserId = buyerId;
 
-            try
-            {
-                this.articleRepository.SaveArticle(article);
-                this.logger.LogMessage($"Article with ID = {article.Id} is sold.", LogLevel.Info);
-            }
-            catch (ArgumentNullException ex)
-            {
-                this.logger.LogMessage($"Could not save article with ID = {article.Id}", LogLevel.Error);  //unreachable code, it already checked that article is not null, probably should be part of databaseDriver
-                throw new Exception("Could not save article with ID"); // throw in catch 
-            }
-            catch (Exception)
-            {//remove this exception
-            }
+            this.articleRepository.SaveArticle(article);
+            this.logger.LogMessage($"Article with ID = {article.Id} is successfully sold.", LogLevel.Info);
+
         }
 
-        public Article GetArticleByArticleId(int id)
+        public Article GetSoldArticleByArticleId(int id)
         {
-            return this.articleRepository.GetArticleByArticleId(id);
+            // potentaly there can be more then one article with the same id. Consider that article model should be extended with one more identifier (E.g articleOrderId)
+            Article article = this.articleRepository.GetArticleByArticleId(id).FirstOrDefault(x => x.IsSold);
+            if (article == null)
+            {
+                throw new ArticleNotFoundException($"Could not find article with article ID = {id}");
+            }
+            return article;
+        }
+
+        public Article GetOrderedArticleByArticleId(int id)
+        {
+            Article article = this.articleRepository.GetArticleByArticleId(id).FirstOrDefault(x => x.IsOrdered && !x.IsSold);
+            if (article == null)
+            {
+                throw new ArticleNotFoundException($"Could not find article with article ID = {id}");
+            }
+            return article;
         }
 
 
@@ -78,6 +92,7 @@ namespace ShopImplementation
             }
             return article;
         }
+
     }
 
 }

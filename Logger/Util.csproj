@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exception\ArticleNotFoundException.cs" />
     <Compile Include="Logger\ConsoleLogger.cs" />
     <Compile Include="Logger\ILogger.cs" />
     <Compile Include="Logger\ILogType.cs" />

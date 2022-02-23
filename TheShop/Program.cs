@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using ShopInterfaces;
+﻿using ShopInterfaces;
 using System;
+using Util.Exception;
 
 namespace TheShop
 {
@@ -12,41 +12,33 @@ namespace TheShop
         {
             IShopService shopService = Container.GetInstance<IShopService>();
             int articleId = 1;
-            int maxArticlePrice = 20;
+            int maxArticlePrice = 460;
             int buyerId = 10;
 
-            try
-            {
-                //order and sell
-                Article orderedArticle = shopService.OrderArticle(articleId, maxArticlePrice);
-                shopService.SellArticle(orderedArticle, buyerId);
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
+            //order and sell
+            shopService.OrderArticle(articleId, maxArticlePrice);
+            shopService.SellArticle(articleId, buyerId);
 
             try
             {
                 //print article on console
-                Article article = shopService.GetArticleByArticleId(1);
+                Article article = shopService.GetSoldArticleByArticleId(articleId);
                 Console.WriteLine("Found article with ID: " + article.Id);
             }
-            catch (Exception ex)
+            catch (ArticleNotFoundException exception)
             {
-                Console.WriteLine("Article not found: " + ex);
+                Console.WriteLine($"{exception.Message}");
             }
 
             try
             {
                 //print article on console				
-                Article article = shopService.GetArticleByArticleId(12);
+                Article article = shopService.GetSoldArticleByArticleId(12);
                 Console.WriteLine("Found article with ID: " + article.Id);
             }
-            catch (Exception ex)
+            catch (ArticleNotFoundException exception)
             {
-                Console.WriteLine("Article not found: " + ex);
+                Console.WriteLine($"{exception.Message}");
             }
 
             Console.ReadKey();

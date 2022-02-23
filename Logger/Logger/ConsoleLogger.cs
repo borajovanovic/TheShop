@@ -1,5 +1,4 @@
 ﻿using System;
-using Util.Logger;
 
 namespace Util.Logger
 {

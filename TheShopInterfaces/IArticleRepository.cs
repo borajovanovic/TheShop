@@ -1,8 +1,10 @@
-﻿namespace ShopInterfaces
+﻿using System.Collections.Generic;
+
+namespace ShopInterfaces
 {
     public interface IArticleRepository
     {
-        Article GetArticleByArticleId(int id);
+        IEnumerable<Article> GetArticleByArticleId(int id);
         void SaveArticle(Article article);
     }
 }
