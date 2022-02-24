@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ShopImplementation
 {
-    public class SupplierService : ISupplierService
+    internal class SupplierService : ISupplierService
     {
         private readonly ISupplierRepository supplierRepository;
 

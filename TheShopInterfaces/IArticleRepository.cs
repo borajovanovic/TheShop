@@ -2,6 +2,7 @@
 
 namespace ShopInterfaces
 {
+
     public interface IArticleRepository
     {
         IEnumerable<Article> GetArticleByArticleId(int id);

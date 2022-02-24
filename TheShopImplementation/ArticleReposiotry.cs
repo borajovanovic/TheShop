@@ -5,7 +5,7 @@ using System.Linq;
 namespace ShopImplementation
 {
     //in memory implementation
-    public class ArticleReposiotry : IArticleRepository
+    internal class ArticleReposiotry : IArticleRepository
     {
         private readonly HashSet<Article> articles = new HashSet<Article>();
 

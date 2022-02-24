@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ShopImplementation
 {
-    public class SupplierRepository : ISupplierRepository
+    internal class SupplierRepository : ISupplierRepository
     {
         private List<Supplier> suppliers = new List<Supplier>();
 

@@ -1,9 +1,8 @@
 ﻿using Util.Logger;
 using Microsoft.Extensions.DependencyInjection;
-using ShopImplementation;
-using ShopInterfaces;
 using System;
 using Util.TimeProvider;
+using ShopImplementation.DependencyInjection;
 
 namespace TheShop
 {
@@ -12,13 +11,10 @@ namespace TheShop
         public static IServiceProvider Build()
         {
             ServiceCollection container = new ServiceCollection();
-            container.AddScoped<IArticleRepository, ArticleReposiotry>();
-            container.AddScoped<IShopService, ShopService>();
+            container.AddInternalServices(); 
             container.AddScoped<ILogger, Logger>();
             container.AddScoped<ILogType, ConsoleLogger>();
             container.AddScoped<ITimeProvider, TimeProvider>();
-            container.AddScoped<ISupplierService, SupplierService>();
-            container.AddScoped<ISupplierRepository, SupplierRepository>();
 
             return container.BuildServiceProvider();
         }

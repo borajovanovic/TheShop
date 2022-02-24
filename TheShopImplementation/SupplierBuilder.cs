@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ShopImplementation
 {
-    public class SupplierCollectionBuilder
+    internal class SupplierCollectionBuilder
     {
         private IList<SupplierBuilder> supplierBuilders;
         public SupplierCollectionBuilder()
@@ -29,7 +29,7 @@ namespace ShopImplementation
         }
     }
 
-    public class SupplierBuilder
+    internal class SupplierBuilder
     {
         private int id;
         private string suplierName;
@@ -64,7 +64,7 @@ namespace ShopImplementation
         }
     }
 
-    public class InventoryBuilder
+    internal class InventoryBuilder
     {
         private List<ArticleBuilder> inventoryArticlesBuilder;
 
@@ -92,7 +92,7 @@ namespace ShopImplementation
         }
     }
 
-    public class ArticleBuilder
+    internal class ArticleBuilder
     {
         private int id;
 

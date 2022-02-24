@@ -47,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IArticleFilterCriteria.cs" />
     <Compile Include="IArticleRepository.cs" />
     <Compile Include="IShopService.cs" />
     <Compile Include="ISupplierRepository.cs" />

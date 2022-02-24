@@ -6,7 +6,7 @@ using Util.TimeProvider;
 
 namespace ShopImplementation
 {
-    public class ShopService : IShopService
+    internal class ShopService : IShopService
     {
         private readonly IArticleRepository articleRepository;
         private readonly ISupplierService supplierService;
