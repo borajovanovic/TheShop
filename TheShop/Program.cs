@@ -27,7 +27,7 @@ namespace TheShop
             }
             catch (ArticleNotFoundException exception)
             {
-                Console.WriteLine($"{exception.Message}");
+                Console.WriteLine($"{exception.Message}"); //Decided not to print exception since this is looked as client code
             }
 
             try

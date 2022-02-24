@@ -1,5 +1,4 @@
-﻿using ShopImplementation;
-using ShopInterfaces;
+﻿using ShopInterfaces;
 using System.Collections.Generic;
 
 namespace ShopImplementation

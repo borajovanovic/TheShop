@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Util.Logger
+﻿namespace Util.Logger
 {
+    /// <summary>
+    /// Represetn LogType Interface
+    /// </summary>
     public interface ILogType
     {
+        /// <summary>
+        /// Logs the specified log message.
+        /// </summary>
+        /// <param name="logMessage">The log message.</param>
         void Log(string logMessage);
         
     }
